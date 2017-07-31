@@ -1,30 +1,74 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { DataSource } from "@angular/cdk";
 
-export interface Producto {
-  id: number;
-  descripcion: string;
-  precio: number;
-  ultimaCompra: string;
-  stock: number;
-};
+import { EntityDeleteModalComponent } from './entity-delete-modal.component';
+
+import { EntityService } from './entity.service';
+import { Entity } from './entity.model';
+
+import { Observable } from 'rxjs/Observable';
+import { MdDialog } from "@angular/material";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 @Component({
   selector: 'app-entity',
   templateUrl: './entity.component.html',
-  styleUrls: ['./entity.component.css']
+  styleUrls: ['./entity.component.css'],
+  providers: [ EntityService ]
 })
 export class EntityComponent implements OnInit {
 
-  productos: Producto[] = [
-    { id: 1, descripcion: 'Mackbook Pro', precio: 2000000, ultimaCompra: '19/08/2017', stock: 23 },
-    { id: 1, descripcion: 'iPad 2', precio: 2000000, ultimaCompra: '19/08/2017', stock: 10 },
-    { id: 1, descripcion: 'iPhone', precio: 2000000, ultimaCompra: '19/08/2017', stock: 43 },
-    { id: 1, descripcion: 'Portatil ASUS', precio: 2000000, ultimaCompra: '19/08/2017', stock: 53 }
-  ];
+  displayedColumns = ['name', 'description', 'category', 'picture', 'price', 'actions'];
 
-  constructor() { }
+  dataSource: EntityDataSource | null;
+  entityDatabase: EntityDatabase | null;
+
+  constructor(
+    private entityService: EntityService,
+    public dialog: MdDialog
+  ) {
+    this.entityDatabase = new EntityDatabase(this.entityService);
+    this.dataSource = new EntityDataSource(this.entityDatabase);
+   }
 
   ngOnInit() {
   }
 
+  deleteEntity(id: string) {
+    let dialogRef = this.dialog.open(EntityDeleteModalComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === "0") {
+        this.entityService.delete(id).subscribe((response) => {
+          this.entityDatabase.getData();
+        });
+      }
+    });
+  }
+}
+
+export class EntityDatabase {
+
+  dataChange: BehaviorSubject<Entity[]> = new BehaviorSubject<Entity[]>([]);
+
+  constructor(private entityService: EntityService) {
+    this.getData();
+  }
+
+  getData() {
+    this.entityService.getAll().subscribe(entities => this.dataChange.next(entities));
+  }
+}
+
+export class EntityDataSource extends DataSource<Entity> {
+
+  constructor(private database: EntityDatabase) {
+    super();
+  }
+
+  connect(): Observable<Entity[]> {
+    return this.database.dataChange;
+  }
+
+  disconnect() {
+  }
 }

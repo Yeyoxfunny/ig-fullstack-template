@@ -1,0 +1,28 @@
+<div class="container m-top-big-space">
+  <md-toolbar color="primary">
+    <span>Actualizar</span>
+  </md-toolbar>
+  <md-card>
+    <form class="row" #myForm="ngForm">
+      <md-input-container class="col-md-12">
+        <input mdInput placeholder="Nombre" name="name" [(ngModel)]="entity.name">
+      </md-input-container>
+
+      <md-input-container class="col-md-12">
+        <textarea mdInput placeholder="Descripción" name="description" [(ngModel)]="entity.description"></textarea>
+      </md-input-container>
+
+      <md-select placeholder="Categorías" name="category" class="col-md-12" [(ngModel)]="entity.category">
+        <md-option *ngFor="let categoria of categorias" [value]="categoria">
+          {{ categoria }}
+        </md-option>
+      </md-select>
+
+      <md-input-container class="col-md-12">
+        <input type="number" mdInput placeholder="Precio" name="price" [(ngModel)]="entity.price">
+      </md-input-container>
+
+      <button md-raised-button color="primary" (click)="actualizar()">Actualizar</button>
+    </form>
+  </md-card>
+</div>
