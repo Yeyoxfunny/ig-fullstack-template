@@ -1,6 +1,6 @@
 <div class="container m-top-big-space">
   <md-toolbar color="primary">
-    <span>Actualizar</span>
+    <span>{{ crudOperationTitle }}</span>
   </md-toolbar>
   <md-card>
     <form class="row" #myForm="ngForm">
@@ -22,7 +22,8 @@
         <input type="number" mdInput placeholder="Precio" name="price" [(ngModel)]="entity.price">
       </md-input-container>
 
-      <button md-raised-button color="primary" (click)="actualizar()">Actualizar</button>
+      <button md-raised-button color="primary" (click)="registrar()" *ngIf="isCreate">Registrar</button>
+      <button md-raised-button color="primary" (click)="actualizar()" *ngIf="!isCreate">Actualizar</button>
     </form>
   </md-card>
 </div>

@@ -9,7 +9,7 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class EntityService {
 
-  private entityUrl:string = 'http://10.75.7.70:3000/api/product/';
+  private entityUrl = 'api/entities/';
 
   constructor(private http: Http) {
 
@@ -17,19 +17,19 @@ export class EntityService {
 
   getAll(): Observable<Entity[]> {
     return this.http.get(this.entityUrl)
-                    .map(this.checkStatus)
-                    .map(this.extractEntities);
+      .map(this.checkStatus)
+      .map(this.extractEntities);
   }
 
   getById(id: string): Observable<Entity> {
     return this.http.get(this.entityUrl + id)
-                    .map(this.checkStatus)
-                    .map(this.extractEntity);
+      .map(this.checkStatus)
+      .map(this.extractEntity);
   }
 
   insert(entity: Entity): Observable<any> {
     return this.http.post(this.entityUrl, entity)
-                    .map(this.checkStatus);
+      .map(this.checkStatus);
   }
 
   update(id: string, entity: Entity) {
@@ -38,24 +38,23 @@ export class EntityService {
 
   delete(id: string): Observable<any> {
     return this.http.delete(this.entityUrl + id)
-                    .map(this.checkStatus);
+      .map(this.checkStatus);
   }
 
   private checkStatus(response: Response) {
     const status = response.status;
-    if (status === 200 || status === 201) {
+    if (status === 200 || status === 201 || status === 204) {
       return response;
     }
     throw response;
   }
 
   private extractEntities = (response: Response): Entity[] => {
-    return response.json().products.map(this.convertToEntity);
+    return response.json().map(this.convertToEntity);
   }
 
   private extractEntity = (response: Response): Entity => {
-    const entity = response.json().product;
-    return this.convertToEntity(entity);
+    return this.convertToEntity(response.json());
   }
 
   private convertToEntity = (data): Entity => {
@@ -70,17 +69,17 @@ export class EntityService {
     return entity;
   }
 
-  private handleError(error: Response | any){
-		let errMsg: string;
-		if(error instanceof Response){
-			const body = error.json() || '';
-			const err = body.msg || JSON.stringify(body);
-			errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-		} else{
-			errMsg = error.message ? error.message : error.toString();
-		}
-		console.error(errMsg);
-		console.log(error);
-		return Observable.throw(errMsg);
-	}
+  private handleError(error: Response | any) {
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.msg || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    console.log(error);
+    return Observable.throw(errMsg);
+  }
 }
