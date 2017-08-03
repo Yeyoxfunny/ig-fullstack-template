@@ -5,24 +5,33 @@
   <md-card>
     <form class="row" #myForm="ngForm">
       <md-input-container class="col-md-12">
-        <input mdInput placeholder="Nombre" name="name" [(ngModel)]="entity.name">
+        <input *ngIf="entity" mdInput placeholder="Nombre" name="name" [(ngModel)]="entity.name">
+        <input *ngIf="!entity" mdInput placeholder="Nombre" name="name" ngModel>
       </md-input-container>
 
       <md-input-container class="col-md-12">
-        <textarea mdInput placeholder="Descripción" name="description" [(ngModel)]="entity.description"></textarea>
+        <textarea *ngIf="entity" mdInput placeholder="Descripción" name="description" [(ngModel)]="entity.description"></textarea>
+        <textarea *ngIf="!entity" mdInput placeholder="Descripción" name="description" ngModel></textarea>
       </md-input-container>
 
-      <md-select placeholder="Categorías" name="category" class="col-md-12" [(ngModel)]="entity.category">
+      <md-select *ngIf="entity" placeholder="Categorías" name="category" class="col-md-12" [(ngModel)]="entity.category">
+        <md-option *ngFor="let categoria of categorias" [value]="categoria">
+          {{ categoria }}
+        </md-option>
+      </md-select>
+
+      <md-select *ngIf="!entity" placeholder="Categorías" name="category" class="col-md-12" ngModel>
         <md-option *ngFor="let categoria of categorias" [value]="categoria">
           {{ categoria }}
         </md-option>
       </md-select>
 
       <md-input-container class="col-md-12">
-        <input type="number" mdInput placeholder="Precio" name="price" [(ngModel)]="entity.price">
+        <input *ngIf="entity" type="number" mdInput placeholder="Precio" name="price" [(ngModel)]="entity.price">
+        <input *ngIf="!entity" type="number" mdInput placeholder="Precio" name="price" ngModel="entity.price">
       </md-input-container>
 
-      <button md-raised-button color="primary" (click)="registrar()" *ngIf="isCreate">Registrar</button>
+      <button md-raised-button color="primary" (click)="registrar(myForm.value)" *ngIf="isCreate">Registrar</button>
       <button md-raised-button color="primary" (click)="actualizar()" *ngIf="!isCreate">Actualizar</button>
     </form>
   </md-card>

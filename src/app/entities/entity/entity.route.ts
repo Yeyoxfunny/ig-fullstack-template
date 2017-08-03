@@ -1,3 +1,4 @@
+import { EntityDetailsComponent } from './entity-details.component';
 import { Routes } from '@angular/router';
 
 import { EntityComponent } from './entity.component';
@@ -9,7 +10,8 @@ export const entityRoutes: Routes = [
     children: [
       { path: '', component: EntityComponent },
       { path: 'create', component: EntityUpSertComponent },
-      { path: 'update/:id', component: EntityUpSertComponent }
+      { path: 'update/:id', component: EntityUpSertComponent },
+      { path: 'details/:id', component: EntityDetailsComponent }
     ]
   }
 ];

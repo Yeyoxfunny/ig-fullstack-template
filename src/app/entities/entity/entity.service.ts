@@ -18,27 +18,33 @@ export class EntityService {
   getAll(): Observable<Entity[]> {
     return this.http.get(this.entityUrl)
       .map(this.checkStatus)
-      .map(this.extractEntities);
+      .map(this.extractEntities)
+      .catch(this.handleError);
   }
 
   getById(id: string): Observable<Entity> {
     return this.http.get(this.entityUrl + id)
       .map(this.checkStatus)
-      .map(this.extractEntity);
+      .map(this.extractEntity)
+      .catch(this.handleError);
   }
 
   insert(entity: Entity): Observable<any> {
     return this.http.post(this.entityUrl, entity)
-      .map(this.checkStatus);
+      .map(this.checkStatus)
+      .catch(this.handleError);
   }
 
   update(id: string, entity: Entity) {
-    return this.http.put(this.entityUrl + id, entity).map(this.checkStatus);
+    return this.http.put(this.entityUrl + id, entity)
+      .map(this.checkStatus)
+      .catch(this.handleError);
   }
 
   delete(id: string): Observable<any> {
     return this.http.delete(this.entityUrl + id)
-      .map(this.checkStatus);
+      .map(this.checkStatus)
+      .catch(this.handleError);
   }
 
   private checkStatus(response: Response) {

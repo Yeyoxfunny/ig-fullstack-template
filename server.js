@@ -4,14 +4,18 @@ const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const fallback = require('express-history-api-fallback');
+
 const mongoose = require('mongoose');
 mongoose.Promise = Promise;
-const app = express();
 
-mongoose.connect('mongodb://localhost:27017/shop', { useMongoClient: true });
+const app = express();
+const config = require('./server-config');
+
+mongoose.connect(config.mongo.uri, { useMongoClient: true });
 
 mongoose.connection.on('connected', () => {
-    console.log(`Connected to database: Shop`);
+    console.log(`Connected to database`);
 });
 
 mongoose.connection.on('error', (err) => {
@@ -22,11 +26,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'dist')));
+const root = path.join(__dirname, 'dist');
+app.use(express.static(root));
 
 // api routes
 const entitiy = require('./server/api/entidad');
 app.use('/api/entities', entitiy);
+
+app.use(fallback('index.html', { root: root }));
 
 app.get('*', (req, res) => {
   res.send(path.join(__dirname, 'dist/index.html'));

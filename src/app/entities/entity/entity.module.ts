@@ -1,3 +1,4 @@
+import { EntityDetailsComponent } from './entity-details.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -15,7 +16,8 @@ import { EntityService } from './entity.service';
   declarations: [
     EntityComponent,
     EntityDeleteModalComponent,
-    EntityUpSertComponent
+    EntityUpSertComponent,
+    EntityDetailsComponent
   ],
   providers: [ EntityService ],
   bootstrap: [ EntityDeleteModalComponent ]
