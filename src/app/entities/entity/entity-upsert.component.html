@@ -28,7 +28,7 @@
 
       <md-input-container class="col-md-12">
         <input *ngIf="entity" type="number" mdInput placeholder="Precio" name="price" [(ngModel)]="entity.price">
-        <input *ngIf="!entity" type="number" mdInput placeholder="Precio" name="price" ngModel="entity.price">
+        <input *ngIf="!entity" type="number" mdInput placeholder="Precio" name="price" ngModel>
       </md-input-container>
 
       <button md-raised-button color="primary" (click)="registrar(myForm.value)" *ngIf="isCreate">Registrar</button>

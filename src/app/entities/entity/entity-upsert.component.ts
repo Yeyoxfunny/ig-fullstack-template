@@ -35,7 +35,8 @@ export class EntityUpSertComponent implements OnInit {
     });
   }
 
-  registrar() {
+  registrar(formValues) {
+    this.entity = formValues;
     this.entityService.insert(this.entity).subscribe(
       (response) => {
         this.router.navigate(['/entities/entity']);
@@ -44,8 +45,7 @@ export class EntityUpSertComponent implements OnInit {
     );
   }
 
-  actualizar(formValues) {
-    this.entity = formValues;
+  actualizar() {
     this.entityService.update(this.entity.id, this.entity).subscribe(
       (response) => {
         this.router.navigate(['/entities/entity']);
