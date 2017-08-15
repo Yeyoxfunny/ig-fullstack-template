@@ -9,7 +9,7 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class EntityService {
 
-  private entityUrl = 'api/entities/';
+  private entityUrl = 'http://localhost:3000/api/entities/';
 
   constructor(private http: Http) {
 

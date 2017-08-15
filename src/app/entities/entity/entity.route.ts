@@ -10,8 +10,8 @@ export const entityRoutes: Routes = [
     children: [
       { path: '', component: EntityComponent },
       { path: 'create', component: EntityUpSertComponent },
-      { path: 'update/:id', component: EntityUpSertComponent },
-      { path: 'details/:id', component: EntityDetailsComponent }
+      { path: ':id', component: EntityDetailsComponent },
+      { path: ':id/update', component: EntityUpSertComponent }
     ]
   }
 ];

@@ -1,38 +1,45 @@
-<div class="container m-top-big-space">
-  <md-toolbar color="primary">
-    <span>{{ crudOperationTitle }}</span>
-  </md-toolbar>
-  <md-card>
-    <form class="row" #myForm="ngForm">
-      <md-input-container class="col-md-12">
-        <input *ngIf="entity" mdInput placeholder="Nombre" name="name" [(ngModel)]="entity.name">
-        <input *ngIf="!entity" mdInput placeholder="Nombre" name="name" ngModel>
-      </md-input-container>
-
-      <md-input-container class="col-md-12">
-        <textarea *ngIf="entity" mdInput placeholder="Descripción" name="description" [(ngModel)]="entity.description"></textarea>
-        <textarea *ngIf="!entity" mdInput placeholder="Descripción" name="description" ngModel></textarea>
-      </md-input-container>
-
-      <md-select *ngIf="entity" placeholder="Categorías" name="category" class="col-md-12" [(ngModel)]="entity.category">
-        <md-option *ngFor="let categoria of categorias" [value]="categoria">
-          {{ categoria }}
-        </md-option>
-      </md-select>
-
-      <md-select *ngIf="!entity" placeholder="Categorías" name="category" class="col-md-12" ngModel>
-        <md-option *ngFor="let categoria of categorias" [value]="categoria">
-          {{ categoria }}
-        </md-option>
-      </md-select>
-
-      <md-input-container class="col-md-12">
-        <input *ngIf="entity" type="number" mdInput placeholder="Precio" name="price" [(ngModel)]="entity.price">
-        <input *ngIf="!entity" type="number" mdInput placeholder="Precio" name="price" ngModel>
-      </md-input-container>
-
-      <button md-raised-button color="primary" (click)="registrar(myForm.value)" *ngIf="isCreate">Registrar</button>
-      <button md-raised-button color="primary" (click)="actualizar()" *ngIf="!isCreate">Actualizar</button>
-    </form>
-  </md-card>
+<div class="container m-top-and-bottom">
+  <div class="card">
+    <div class="card-header text-white text-center bg-dark">
+      <h4>{{ crudOperationTitle }} Entidad</h4>
+    </div>
+    <div class="card-body">
+      <form #myForm="ngForm">
+        <div class="row">
+          <div *ngIf="entity" class="col-md-12 form-group">
+            <label for="">ID</label>
+            <input *ngIf="entity" type="text" class="form-control" name="id" [(ngModel)]="entity.id" disabled>
+          </div>
+          <div class="col-md-12 form-group">
+            <label for="">Nombre</label>
+            <input *ngIf="entity" type="text" class="form-control" name="name" [(ngModel)]="entity.name">
+            <input *ngIf="!entity" type="text" class="form-control" name="name" ngModel>
+          </div>
+          <div class="col-md-12 form-group">
+            <label for="">Descripción</label>
+            <textarea *ngIf="entity" type="text" name="description" class="form-control" [(ngModel)]="entity.description"></textarea>
+            <textarea *ngIf="!entity" type="text" name="description" class="form-control" ngModel></textarea>
+          </div>
+          <div class="col-md-12 form-group">
+            <label for="">Categoría</label>
+            <select *ngIf="entity" name="category" id="" class="form-control" [(ngModel)]="entity.category">
+              <option *ngFor="let category of categorias" [value]="category">{{ category }}</option>
+            </select>
+            <select *ngIf="!entity" name="category" id="" class="form-control" ngModel>
+              <option *ngFor="let category of categorias" [value]="category">{{ category }}</option>
+            </select>
+          </div>
+          <div class="col-md-12 form-group">
+            <label for="">Precio</label>
+            <input *ngIf="entity" type="number" name="price" class="form-control" [(ngModel)]="entity.price">
+            <input *ngIf="!entity" type="number" name="price" class="form-control" ngModel="entity.price">
+          </div>
+          <div class="col form-group">
+            <button class="btn btn-dark cursor-pointer" (click)="registrar(myForm.value)" *ngIf="isCreate"><i class="fa fa-floppy-o fa-fw"></i>Registrar</button>
+            <button class="btn btn-dark cursor-pointer" (click)="actualizar()" *ngIf="!isCreate"><i class="fa fa-floppy-o fa-fw"></i>Actualizar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

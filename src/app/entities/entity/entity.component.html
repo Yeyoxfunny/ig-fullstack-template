@@ -1,39 +1,49 @@
-<div class="container-fluid" style="margin-top: 2em;">
-  <button md-raised-button color="primary" [routerLink]="['create']">Crear Nuevo</button>
-  <md-table [dataSource]="dataSource">
-    <ng-container cdkColumnDef="name">
-      <md-header-cell *cdkHeaderCellDef> Nombre </md-header-cell>
-      <md-cell *cdkCellDef="let row"> {{row.name}} </md-cell>
-    </ng-container>
+<div class="container-fluid">
+  <h2 class="m-top-and-bottom-2">
+    <span>Entidad</span>
+    <a class="btn btn-primary float-right" [routerLink]="['create']">
+      <i class="fa fa-plus fa-fw" aria-hidden="true"></i>
+      Crear Nuevo Entidad
+    </a>
+  </h2>
 
-    <ng-container cdkColumnDef="description">
-      <md-header-cell *cdkHeaderCellDef> Descripción </md-header-cell>
-      <md-cell *cdkCellDef="let row"> {{row.description}} </md-cell>
-    </ng-container>
-
-    <ng-container cdkColumnDef="category">
-      <md-header-cell *cdkHeaderCellDef> Categoría </md-header-cell>
-      <md-cell *cdkCellDef="let row"> {{row.category}} </md-cell>
-    </ng-container>
-
-    <ng-container cdkColumnDef="picture">
-      <md-header-cell *cdkHeaderCellDef> Imagen </md-header-cell>
-      <md-cell *cdkCellDef="let row"> {{row.picture}} </md-cell>
-    </ng-container>
-
-    <ng-container cdkColumnDef="price">
-      <md-header-cell *cdkHeaderCellDef> Precio </md-header-cell>
-      <md-cell *cdkCellDef="let row"> {{row.price}} </md-cell>
-    </ng-container>
-
-    <ng-container cdkColumnDef="actions">
-      <md-header-cell *cdkHeaderCellDef> Actions </md-header-cell>
-      <md-cell *cdkCellDef="let row">
-        <a class="cursor-pointer" [routerLink]="['details', row.id]">Ver detalles</a> | <a class="cursor-pointer" [routerLink]="['update', row.id]">Actualizar</a> | <a class="cursor-pointer" (click)="deleteEntity(row.id)">Eliminar</a>
-      </md-cell>
-    </ng-container>
-
-    <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
-    <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
-  </md-table>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Categoría</th>
+        <th>Imagen</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entity of entities">
+        <td>{{ entity.name }}</td>
+        <td>{{ entity.description }}</td>
+        <td>{{ entity.category }}</td>
+        <td>xxx.png</td>
+        <td>{{ entity.price | currency:'COL' }}</td>
+        <td>
+          <a class="btn btn-info btn-sm" routerLink="{{ entity.id }}"><span class="fa fa-eye fa-fw"></span>Ver</a>
+          <a class="btn btn-primary btn-sm" routerLink="{{ entity.id }}/update"><span class="fa fa-pencil fa-fw"></span>Editar</a>
+          <a class="btn btn-danger btn-sm text-white cursor-pointer" (click)="openDeleteModal(content, entity.id)"><span class="fa fa-trash fa-fw"></span>Eliminar</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h5 class="modal-title"><i class="fa fa-exclamation-triangle fa-lg fa-fw" aria-hidden="true"></i>¿Esta seguro de eliminar?</h5>
+    <button type="button" class="close cursor-pointer" aria-label="Close" (click)="d(deleteModalOpts.cancel)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary cursor-pointer" (click)="c(deleteModalOpts.ok)"><i class="fa fa-check fa-fw"></i>Aceptar</button>
+    <button type="button" class="btn btn-secondary cursor-pointer" (click)="c(deleteModalOpts.cancel)"><i class="fa fa-ban fa-fw"></i>Cancelar</button>
+  </div>
+</ng-template>

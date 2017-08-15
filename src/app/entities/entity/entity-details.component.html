@@ -1,28 +1,15 @@
-<md-card class="container">
-  <ul *ngIf="entity">
-    <li>
-      <strong>Id:</strong>
-      {{ entity.id }}
-    </li>
-    <li>
-      <strong>Name:</strong>
-      {{ entity.name }}
-    </li>
-    <li>
-      <strong>Picture:</strong>
-      {{ entity.picture }}
-    </li>
-    <li>
-      <strong>Price:</strong>
-      {{ entity.price }}
-    </li>
-    <li>
-      <strong>Category:</strong>
-      {{ entity.category }}
-    </li>
-    <li>
-      <strong>Description:</strong>
-      {{ entity.description }}
-    </li>
-  </ul>
-</md-card>
+<div *ngIf="entity" class="container">
+  <h3 class="m-top-and-bottom-2"><span>Entity</span> {{ entity.id }}</h3>
+  <hr />
+  <dl>
+    <dt>Nombre</dt>
+    <dd>{{ entity.name }}</dd>
+    <dt>Descripción</dt>
+    <dd>{{ entity.description }}</dd>
+    <dt>Categoría</dt>
+    <dd>{{ entity.category }}</dd>
+    <dt>Imagen</dt>
+    <dd>{{ entity.price }}</dd>
+  </dl>
+  <a routerLink="update" class="btn btn-primary"><i class="fa fa-floppy-o fa-fw"></i>Actualizar</a>
+</div>

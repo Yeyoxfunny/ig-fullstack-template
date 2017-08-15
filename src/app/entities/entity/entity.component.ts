@@ -1,73 +1,41 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { DataSource } from "@angular/cdk";
-
-import { EntityDeleteModalComponent } from './entity-delete-modal.component';
+import { Component, Inject, OnInit, Predicate } from '@angular/core';
 
 import { EntityService } from './entity.service';
 import { Entity } from './entity.model';
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs/Observable';
-import { MdDialog } from "@angular/material";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-entity',
-  templateUrl: './entity.component.html',
-  styleUrls: ['./entity.component.css']
+  templateUrl: './entity.component.html'
 })
 export class EntityComponent implements OnInit {
-
-  displayedColumns = ['name', 'description', 'category', 'picture', 'price', 'actions'];
-
-  dataSource: EntityDataSource | null;
-  entityDatabase: EntityDatabase | null;
+  entities: Entity[];
+  deleteModalOpts = { ok: 'OK', cancel: 'CANCEL' };
 
   constructor(
     private entityService: EntityService,
-    public dialog: MdDialog
+    private modalService: NgbModal
   ) {
-    this.entityDatabase = new EntityDatabase(this.entityService);
-    this.dataSource = new EntityDataSource(this.entityDatabase);
-   }
+  }
 
   ngOnInit() {
-  }
-
-  deleteEntity(id: string) {
-    let dialogRef = this.dialog.open(EntityDeleteModalComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === "0") {
-        this.entityService.delete(id).subscribe((response) => {
-          this.entityDatabase.getData();
-        });
-      }
+    this.entityService.getAll().subscribe((entities) => {
+      this.entities = entities;
     });
   }
-}
 
-export class EntityDatabase {
-
-  dataChange: BehaviorSubject<Entity[]> = new BehaviorSubject<Entity[]>([]);
-
-  constructor(private entityService: EntityService) {
-    this.getData();
-  }
-
-  getData() {
-    this.entityService.getAll().subscribe(entities => this.dataChange.next(entities));
-  }
-}
-
-export class EntityDataSource extends DataSource<Entity> {
-
-  constructor(private database: EntityDatabase) {
-    super();
-  }
-
-  connect(): Observable<Entity[]> {
-    return this.database.dataChange;
-  }
-
-  disconnect() {
+  openDeleteModal(content: any, id: string) {
+    this.modalService.open(content).result.then((option) => {
+      if (option === this.deleteModalOpts.ok) {
+        this.entityService.delete(id).subscribe(response => {
+          this.entities = this.entities.filter(entity => entity.id !== id);
+        });
+      }
+    }, (reason) => {
+      console.log('Holaaaa ' + reason);
+    });
   }
 }
