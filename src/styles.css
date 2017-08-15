@@ -1,3 +1,6 @@
+/* ==========================================================================
+Helper styles
+========================================================================== */
 
 .m-top-big-space {
   margin: 5rem;
@@ -23,4 +26,20 @@
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+
+/* ==========================================================================
+Generic styles
+========================================================================== */
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid green;
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid red;
+}
+
+input.ng-untouched, textarea.ng-untouched, select.ng-untouched {
+  border-left: 5px solid #80bdff;
 }

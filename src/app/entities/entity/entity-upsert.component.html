@@ -8,34 +8,49 @@
         <div class="row">
           <div *ngIf="entity" class="col-md-12 form-group">
             <label for="">ID</label>
-            <input *ngIf="entity" type="text" class="form-control" name="id" [(ngModel)]="entity.id" disabled>
+            <input *ngIf="entity" type="text" class="form-control" name="id" [(ngModel)]="entity.id" disabled required>
           </div>
           <div class="col-md-12 form-group">
             <label for="">Nombre</label>
-            <input *ngIf="entity" type="text" class="form-control" name="name" [(ngModel)]="entity.name">
-            <input *ngIf="!entity" type="text" class="form-control" name="name" ngModel>
+            <input *ngIf="entity" type="text" class="form-control" name="name" [(ngModel)]="entity.name" required [ngClass]="{ 'is-invalid': (myForm.controls.name?.dirty && myForm.controls.name?.invalid) }">
+            <input *ngIf="!entity" type="text" class="form-control" name="name" ngModel required minlength="3" maxlength="20"
+             [ngClass]="{ 'is-invalid': (myForm.controls.name?.dirty && myForm.controls.name?.invalid) }">
+            <div *ngIf="(myForm.controls.name?.dirty && myForm.controls.name?.invalid)">
+              <small [hidden]="!myForm.controls.name?.errors?.required" class="form-text text-danger">Este campo es requerido</small>
+              <small [hidden]="!myForm.controls.name?.errors?.minlength" class="form-text text-danger">La longitud mínima debe ser al menos de 3 caracteres</small>
+              <small [hidden]="!myForm.controls.name?.errors?.maxlength" class="form-text text-danger">La longitud no debe ser mayor que 20 caracteres</small>
+            </div>
           </div>
           <div class="col-md-12 form-group">
             <label for="">Descripción</label>
-            <textarea *ngIf="entity" type="text" name="description" class="form-control" [(ngModel)]="entity.description"></textarea>
-            <textarea *ngIf="!entity" type="text" name="description" class="form-control" ngModel></textarea>
+            <textarea *ngIf="entity" type="text" name="description" class="form-control" [(ngModel)]="entity.description" required [ngClass]="{ 'is-invalid': (myForm.controls.description?.dirty && myForm.controls.description?.invalid) }"></textarea>
+            <textarea *ngIf="!entity" type="text" name="description" class="form-control" ngModel required [ngClass]="{ 'is-invalid': (myForm.controls.description?.dirty && myForm.controls.description?.invalid) }"></textarea>
+            <div *ngIf="myForm.controls.description?.dirty && myForm.controls.description?.invalid">
+              <small [hidden]="!myForm.controls.description?.errors?.required" class="form-text text-danger">Este campo es requerido</small>
+            </div>
           </div>
           <div class="col-md-12 form-group">
             <label for="">Categoría</label>
-            <select *ngIf="entity" name="category" id="" class="form-control" [(ngModel)]="entity.category">
+            <select *ngIf="entity" name="category" id="" class="form-control" [(ngModel)]="entity.category" required [ngClass]="{ 'is-invalid': (myForm.controls.category?.dirty && myForm.controls.category?.invalid) }">
               <option *ngFor="let category of categorias" [value]="category">{{ category }}</option>
             </select>
-            <select *ngIf="!entity" name="category" id="" class="form-control" ngModel>
+            <select *ngIf="!entity" name="category" id="" class="form-control" ngModel required [ngClass]="{ 'is-invalid': (myForm.controls.category?.dirty && myForm.controls.category?.invalid) }">
               <option *ngFor="let category of categorias" [value]="category">{{ category }}</option>
             </select>
+            <div *ngIf="myForm.controls.category?.dirty && myForm.controls.category?.invalid">
+              <small [hidden]="!myForm.controls.category?.errors?.required" class="form-text text-danger">Este campo es requerido</small>
+            </div>
           </div>
           <div class="col-md-12 form-group">
             <label for="">Precio</label>
-            <input *ngIf="entity" type="number" name="price" class="form-control" [(ngModel)]="entity.price">
-            <input *ngIf="!entity" type="number" name="price" class="form-control" ngModel="entity.price">
+            <input *ngIf="entity" type="number" name="price" class="form-control" [(ngModel)]="entity.price" required [ngClass]="{ 'is-invalid': (myForm.controls.price?.dirty && myForm.controls.price?.invalid) }">
+            <input *ngIf="!entity" type="number" name="price" class="form-control" ngModel="entity.price" required [ngClass]="{ 'is-invalid': (myForm.controls.price?.dirty && myForm.controls.price?.invalid) }">
+             <div *ngIf="myForm.controls.price?.dirty && myForm.controls.price?.invalid">
+              <small [hidden]="!myForm.controls.price?.errors?.required" class="form-text text-danger">Este campo es requerido</small>
+            </div>
           </div>
           <div class="col form-group">
-            <button class="btn btn-dark cursor-pointer" (click)="registrar(myForm.value)" *ngIf="isCreate"><i class="fa fa-floppy-o fa-fw"></i>Registrar</button>
+            <button class="btn btn-dark cursor-pointer" (click)="registrar(myForm.value)" *ngIf="isCreate" [disabled]="myForm.form.invalid"><i class="fa fa-floppy-o fa-fw"></i>Registrar</button>
             <button class="btn btn-dark cursor-pointer" (click)="actualizar()" *ngIf="!isCreate"><i class="fa fa-floppy-o fa-fw"></i>Actualizar</button>
           </div>
         </div>
