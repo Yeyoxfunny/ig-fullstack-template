@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
-import { SidenavComponent } from './layouts/sidenav/sidenav.component';
 import { HomeComponent } from './home/home.component';
 
 import { appRoutes } from './app.routes';
@@ -18,7 +17,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   declarations: [
     AppComponent,
     NavbarComponent,
-    SidenavComponent,
     HomeComponent
   ],
   imports: [
